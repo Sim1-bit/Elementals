@@ -51,7 +51,7 @@ namespace GameOfYear.Gamemode
             return instance;
         }
 
-        private Fight(int proportion, RenderWindow window, Player player/*, NPC bot*/) : base(Color.Green, window, proportion)
+        private Fight(int proportion, RenderWindow window, Player player/*, NPC bot*/) : base(new Color(150, 150, 150), window, proportion)
         {
             sprite = new Sprite();
             this.player = player;
@@ -92,7 +92,7 @@ namespace GameOfYear.Gamemode
                         Button move = new Button(pos, Color.White, text);
                         //move.MouseOn += MouseOn;
                         //move.MouseLeft += MouseLeft;
-                        move.Releas += MovesReleased;
+                        move.Click += MovesClicked;
                         moveButtons.Add(move);
                     }
                 }
@@ -109,7 +109,7 @@ namespace GameOfYear.Gamemode
             this.npc.Print();
         }
 
-        public void MovesReleased(object sender, EventArgs e)
+        public void MovesClicked(object sender, EventArgs e)
         {
             if(!permitChoice)
                 return;
@@ -235,6 +235,45 @@ namespace GameOfYear.Gamemode
                     sprite.Position = new Vector2f(window.Size.X - Proportion * 3, window.Size.Y / 2 - 20);
                     sprite.TextureRect = new IntRect(0, 4 * (int)npc.type.type * 32, 16, 32);
                     window.Draw(sprite);
+
+                    for(int i = 0; i < 2; i++)
+                    {
+                        Elemental aux;
+                        if (i == 0)
+                            aux = player;
+                        else
+                            aux = npc;
+
+                        //Life
+                        int proportion = 20;
+                        RectangleShape rectangle = new RectangleShape()
+                        {
+                            Size = new Vector2f(20 * proportion + 30 - 15 * 2, 15),
+                            Position = new Vector2f((window.Size.X - (20 * proportion + 30 - 15 * 2) - (15 * 1.5f) * 2) * i + (15 * 1.5f), window.Size.Y / 4 * 3),
+                            FillColor = Color.Black,
+                            OutlineColor = Color.Black,
+                            OutlineThickness = 7.5f,
+                        };
+                        window.Draw(rectangle);
+                        rectangle.Size = new Vector2f(aux.LifeRemaing * (20 * proportion + 30 - 15 * 2) / aux.Life, rectangle.Size.Y);
+                        rectangle.FillColor = Color.Green;
+                        window.Draw(rectangle);
+                        //Stamina
+                        rectangle.Position = new Vector2f(rectangle.Position.X, rectangle.Position.Y + 35);
+                        rectangle.FillColor = Color.Black;
+                        rectangle.Size = new Vector2f(20 * proportion + 30 - 15 * 2, 10);
+                        window.Draw(rectangle);
+                        rectangle.FillColor = Color.Yellow;
+                        rectangle.Size = new Vector2f(aux.StaminaRemaing * (20 * proportion + 30 - 15 * 2) / aux.Stamina, rectangle.Size.Y);
+                        window.Draw(rectangle);
+
+                    }
+                    
+
+
+
+
+
                     break;
                 case SubScripts.typeSelection:
                     MenuEdit.Instance().Draw();

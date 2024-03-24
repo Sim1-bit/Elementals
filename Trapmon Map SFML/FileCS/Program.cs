@@ -49,7 +49,7 @@ namespace GameOfYear
         }
         static void Main(string[] args)
         {
-            Dictionary<string, int> parco = new Dictionary<string, int>();
+            /*Dictionary<string, int> parco = new Dictionary<string, int>();
             parco["A"] = 1; 
             parco["B"] = 1; 
             parco["C"] = 1; 
@@ -61,7 +61,7 @@ namespace GameOfYear
             Create.Create.CreateMoves("B", 1, 1, 100, 10, 0, -1);
             Create.Create.CreateMoves("C", 1, 1, 100, 10, 0, -1);
             Create.Create.CreateMoves("D", 3, 1, 100, 10, 0, 0);
-            Console.WriteLine(new Move("Miss").Damage);
+            Console.WriteLine(new Move("Miss").Damage);*/
 
             {
                 FileStream stream = File.Open(@"..\..\..\Volume.dat", FileMode.Open);

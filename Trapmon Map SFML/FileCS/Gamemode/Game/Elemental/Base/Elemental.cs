@@ -339,7 +339,7 @@ namespace GameOfYear.Gamemode
         {
             Logger.Logger.Write(name + ": ");
             Logger.Logger.WriteLine(DamageCalculator(Sender, move).ToString());
-            lifeRemaing -= DamageCalculator(Sender, move);
+            LifeRemaing -= DamageCalculator(Sender, move);
         }
 
         public virtual Move UseMove(int index)

@@ -249,7 +249,7 @@ namespace GameOfYear.Gamemode
                         RectangleShape rectangle = new RectangleShape()
                         {
                             Size = new Vector2f(20 * proportion + 30 - 15 * 2, 15),
-                            Position = new Vector2f((window.Size.X - (20 * proportion + 30 - 15 * 2) - (15 * 1.5f) * 2) * i + (15 * 1.5f), window.Size.Y / 4 * 3),
+                            Position = new Vector2f((window.Size.X - (20 * proportion + 30 - 15 * 2) - (15 * 1.5f) * 2) * i + (15 * 1.5f), window.Size.Y / 4 * 2.9f),
                             FillColor = Color.Black,
                             OutlineColor = Color.Black,
                             OutlineThickness = 7.5f,
@@ -259,7 +259,7 @@ namespace GameOfYear.Gamemode
                         rectangle.FillColor = Color.Green;
                         window.Draw(rectangle);
                         //Stamina
-                        rectangle.Position = new Vector2f(rectangle.Position.X, rectangle.Position.Y + 35);
+                        rectangle.Position = new Vector2f(rectangle.Position.X, rectangle.Position.Y + 32.5f);
                         rectangle.FillColor = Color.Black;
                         rectangle.Size = new Vector2f(20 * proportion + 30 - 15 * 2, 10);
                         window.Draw(rectangle);
@@ -268,11 +268,6 @@ namespace GameOfYear.Gamemode
                         window.Draw(rectangle);
 
                     }
-                    
-
-
-
-
 
                     break;
                 case SubScripts.typeSelection:

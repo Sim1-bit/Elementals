@@ -7,6 +7,7 @@ using SFML.System;
 using SFML.Window;
 using GameOfYear.Logger;
 using System.Linq;
+using System.Threading;
 
 namespace GameOfYear.Gamemode
 {
@@ -344,47 +345,44 @@ namespace GameOfYear.Gamemode
 
         public virtual Move UseMove(int index)
         {
-            try
-            {
-                if (StaminaRemaing == 0)
-                    return new Move("Scontro");
+            object aux = AvailableMove(index);
+            Move auxMove;
 
-                if (moves[0].Stamina > staminaRemaing && moves[1].Stamina > staminaRemaing && moves[2].Stamina > staminaRemaing && moves[3].Stamina > staminaRemaing)
-                    return new Move("Scontro");
+            if (aux == null)
+                auxMove = new Move("Scontro");
+            else
+                auxMove = moves[index];
 
-                if (staminaRemaing - moves[index].Stamina < 0)
-                    return null;
-                if (new Random().Next(1, 101) > moves[index].Precision)
-                {
-                    return new Move("Miss");
-                }
+            if (new Random().Next(1, 101) > moves[index].Precision)
+                return null;
 
-                LifeRemaing -= moves[index].Recoil;
-                StaminaRemaing -= moves[index].Stamina;                
-            }
-            catch (NullReferenceException) 
-            {
-
-            }
-            return moves[index];
+            LifeRemaing -= auxMove.Recoil;
+            StaminaRemaing -= auxMove.Stamina;
+            return auxMove;
         }
 
-        public Move DontUseMove(int index)
+        public object AvailableMove(int index)
         {
-            if (StaminaRemaing == 0)
-                return new Move("Scontro");
-
-            if (moves[0].Stamina > staminaRemaing && moves[1].Stamina > staminaRemaing && moves[2].Stamina > staminaRemaing && moves[3].Stamina > staminaRemaing)
-                return new Move("Scontro");
-
-            if (staminaRemaing - moves[index].Stamina < 0)
-                return null;
-            if (new Random().Next(1, 101) > moves[index].Precision)
+            bool bootableMove = false;
+            for (int i = 0; i < moves.Length; i++)
             {
-                return new Move("Miss");
+                if (moves[i] == null)
+                    continue;
+
+                if (moves[i].Stamina <= StaminaRemaing)
+                {
+                    bootableMove = true;
+                    break;
+                }
             }
 
-            return moves[index];
+            if (!bootableMove)
+                return null;
+
+            if (StaminaRemaing < moves[index].Stamina)
+                return false;
+
+            return true;
         }
 
         public abstract void ChangeType(int type);

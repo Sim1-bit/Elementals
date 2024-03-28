@@ -123,12 +123,23 @@ namespace GameOfYear.Gamemode
 
             indexMovePlayer = player.IndexMoves(aux);
 
-            
-            if (player.DontUseMove(indexMovePlayer) != null)
+            try
+            {
+                if (!(bool)player.AvailableMove(indexMovePlayer))
+                {
+                    return;
+                }
+            }
+            catch (NullReferenceException)
+            {
+                
+            }
+            finally
             {
                 permitChoice = false;
                 KeepFighting();
             }
+            
         }
 
         private void KeepFighting()
@@ -140,35 +151,39 @@ namespace GameOfYear.Gamemode
             {
                 indexMoveNPC = new Random().Next(0, 4);
             }
-            while (npc.DontUseMove(indexMoveNPC) == null);
-            bool aux;
+            while (npc.AvailableMove(indexMoveNPC) != null && !(bool)npc.AvailableMove(indexMoveNPC));
 
+
+            bool priority;
             if (npc[indexMoveNPC].Priority > player[indexMovePlayer].Priority)
-                aux = false;
+                priority = false;
             else if (npc[indexMoveNPC].Priority < player[indexMovePlayer].Priority)
-                aux = true;
+                priority = true;
             else
             {
                 if (npc.Speed > player.Speed)
-                    aux = false;
+                    priority = false;
                 else if (npc.Speed < player.Speed)
-                    aux = true;
+                    priority = true;
                 else
-                    aux = Convert.ToBoolean(new Random().Next(0, 2));
+                    priority = Convert.ToBoolean(new Random().Next(0, 2));
             }
+
 
             for (int i = 0; i < 2; i++)
             {
                 if (npc.LifeRemaing == 0 || player.LifeRemaing == 0)
                     continue;
 
-                if (aux)
+                if (priority)
                     npc.DamageApplication(player, player.UseMove(indexMovePlayer));
                 else
                     player.DamageApplication(npc, npc.UseMove(indexMoveNPC));
 
-                aux = !aux;
+                priority = !priority;
             }
+
+
 
             Console.WriteLine("PLAYER");
             Console.WriteLine("   Life = {0}", player.LifeRemaing);
